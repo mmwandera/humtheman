@@ -2,8 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 // Routes
-router.get('/', (req, res) => {
-    res.send('Hello World!')
+router.get('', (req, res) => {
+    const locals = {
+        title: 'Humtheman',
+        description: 'Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.'
+    }
+
+    res.render('index', { locals })
+})
+
+router.get('/about', (req, res) => {
+    res.render('about')
 })
 
 module.exports = router
