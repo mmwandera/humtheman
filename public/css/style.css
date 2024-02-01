@@ -283,7 +283,7 @@ footer {
     text-align: center;
 }
 
-/* SEARCHBAR */
+/* SEARCH BAR */
 .searchBar {
     visibility: hidden;
     transform: translateY(-100%);

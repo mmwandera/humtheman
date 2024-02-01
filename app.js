@@ -11,6 +11,11 @@ const PORT = 3000 || process.env.PORT;
 // Connect to db
 connectDB();
 
+// Middleware
+// To pass data through forms
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(express.static('public'));
 
 // Templating Engine
