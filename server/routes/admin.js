@@ -76,8 +76,70 @@ router.post('/admin',async (req, res) => {
  * Admin Dashboard
 */
 router.get('/dashboard', authMiddleware, async (req, res) => {
-  res.render('admin/dashboard');
+  try {
+    const locals = {
+      title: 'Dashboard',
+      description: 'Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.'
+    }
+
+    const data = await Post.find();
+    res.render('admin/dashboard', {
+      locals,
+      data,
+      layout: adminLayout
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
 })
+
+/**
+ * GET /
+ * Admin - Create New Post
+*/
+router.get('/add-post', authMiddleware, async (req, res) => {
+  try {
+    const locals = {
+      title: 'Add Post',
+      description: 'Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.'
+    }
+
+    const data = await Post.find();
+    res.render('admin/add-post', {
+      locals,
+      layout: adminLayout
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+/**
+ * POST /
+ * Admin - Create New Post
+*/
+router.post('/add-post', authMiddleware, async (req, res) => {
+  try {
+    // console.log(req.body);
+
+    try {
+      const newPost = new Post({
+        title: req.body.title,
+        body: req.body.body
+      })
+
+      await Post.create(newPost);
+      res.redirect('/dashboard');
+
+    } catch(error) {
+      console.log(error);}
+  } catch(error) {
+    console.log(error);
+  }
+});
 
 /**
  * POST /
