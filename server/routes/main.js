@@ -54,6 +54,7 @@ router.get('/post/:id', async (req, res) => {
       const locals = {
         title: data.title,
         description: "Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.",
+        currentRoute: `/post/${slug}`
       }
   
       res.render('post', { 
@@ -100,9 +101,10 @@ router.post('/search', async (req, res) => {
   
   });
 
-
 router.get('/about', (req, res) => {
-    res.render('about')
+    res.render('about', {
+      currentRoute: '/about'
+    })
 })
 
 module.exports = router

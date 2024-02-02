@@ -35,7 +35,7 @@ router.get('/admin', async (req, res) => {
     try {
       const locals = {
         title: "Admin",
-        description: "Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before."
+        description: "Humtheman Management System",
       }
   
       res.render('admin/index', { locals, layout: adminLayout });
@@ -79,7 +79,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
   try {
     const locals = {
       title: 'Dashboard',
-      description: 'Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.'
+      description: 'Humtheman Management System'
     }
 
     const data = await Post.find();
@@ -102,7 +102,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
   try {
     const locals = {
       title: 'Add Post',
-      description: 'Philosophy, Poetry and General Lifestyle. Elevate your mindset like never before.'
+      description: 'Humtheman Management System'
     }
 
     const data = await Post.find();
@@ -142,6 +142,52 @@ router.post('/add-post', authMiddleware, async (req, res) => {
 });
 
 /**
+ * GET /
+ * Admin - Create New Post
+*/
+router.get('/edit-post/:id', authMiddleware, async (req, res) => {
+  try {
+
+    const locals = {
+      title: "Edit Post",
+      description: "Humtheman Management System",
+    };
+
+    const data = await Post.findOne({ _id: req.params.id });
+
+    res.render('admin/edit-post', {
+      locals,
+      data,
+      layout: adminLayout
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+/**
+ * PUT /
+ * Admin - Edit Post
+*/
+router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+  try {
+    await Post.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      body: req.body.body,
+      updatedAt: Date.now()
+    });
+
+    res.redirect(`/edit-post/${req.params.id}`);
+
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+/**
  * POST /
  * Admin - Register
 */
@@ -163,6 +209,31 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+/**
+ * DELETE /
+ * Admin - Delete Post
+*/
+router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
+
+  try {
+    await Post.deleteOne( { _id: req.params.id } );
+    res.redirect('/dashboard');
+  } catch (error) {
+    console.log(error);
+  }
+
+});
+
+/**
+ * GET /
+ * Admin Logout
+*/
+router.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  // res.json({ message: 'Logout successful.'});
+  res.redirect('/');
 });
 
 module.exports = router
