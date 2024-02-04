@@ -14,7 +14,7 @@ const app = express();
 const PORT = 3000 || process.env.PORT;
 
 // Connect to db
-connectDB();
+// connectDB();
 
 // Middleware
 // To pass data through forms
@@ -43,6 +43,21 @@ app.set('view engine', 'ejs');
 app.use('/', require('./server/routes/main.js'));
 app.use('/', require('./server/routes/admin.js'));
 
-app.listen(PORT , () => {
-    console.log(`Server running on port ${PORT}`)
-})
+// app.listen(PORT , () => {
+//     connectDB();
+//     console.log(`Server running on port ${PORT}`)
+// })
+
+const startServer = async () => {
+  try {
+      await connectDB();
+      app.listen(PORT, () => {
+          console.log(`Server running on port ${PORT}`);
+      });
+  } catch (error) {
+      console.error(`Error: ${error.message}`);
+      process.exit(1);
+  }
+};
+
+startServer();
